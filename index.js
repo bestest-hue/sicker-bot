@@ -6,11 +6,11 @@ const Discord = require("discord.js");
 const superagent = require("superagent")
 
 
-const bot = new Discord.Client({ disableMentions: 'everyone' });
+const bot = new Discord.Client({disableEveryone: true});
 
 bot.on("ready", async () => {
     console.log(`${bot.user.username} is online`)
-    bot.user.setActivity("!help", {type: "STREAMING"});
+    
 
 })
 
@@ -33,7 +33,7 @@ fs.readdir("./commands/", (err, files) => {
             bot.aliases.set(alias, pull.config.name)
         });
     });
-}); 
+});
 
 bot.on("message", async message => {
     if(message.author.bot || message.channel.type === "dm") return;
