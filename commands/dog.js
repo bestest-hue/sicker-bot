@@ -12,14 +12,14 @@ module.exports.run = async (bot, message, args) => {
         console.log(body.message)
         if(!{body}) return message.channel.send("Image not found. Please try again.")
 
-        let dEmbed = new Discord.RichEmbed()
-        .setColor(colors.orange)
+        const embed = new Discord.MessageEmbed()
+        .setColor("BLUE")
         .setTitle('Open original')
         .setURL(body.message)
         .setImage(body.message)
         .setTimestamp()
         .setFooter('Sick Bot', bot.user.displayAvatarURL)
-        message.channel.send({embed: dEmbed});
+        message.channel.send(embed)
 
         msg.delete();
 }

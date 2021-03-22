@@ -17,13 +17,13 @@ module.exports.run = async (bot, message, args) => {
 
            
             // Send result
-            let hisEmbed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
             .setTitle('View Logs')
             .setURL(hisurl + search)
-            .setColor(colors.orange)
+            .setColor("BLUE")
             .setTimestamp()
             .setFooter('Sick Bot', bot.user.displayAvatarURL);
-            message.channel.send({embed: hisEmbed});
+            message.channel.send(embed)
 
             msg.delete();
 

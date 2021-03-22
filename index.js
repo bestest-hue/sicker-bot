@@ -10,8 +10,7 @@ const bot = new Discord.Client({disableEveryone: true});
 
 bot.on("ready", async () => {
     console.log(`${bot.user.username} is online`)
-    
-
+    bot.user.setActivity("something", {type: "STREAMING", url:"https://www.twitch.tv/sick_nerd"});
 })
 
 const fs = require("fs");

@@ -16,14 +16,14 @@ module.exports.run = async (bot, message, args) => {
     .then( res => res.json()).then(body => {
         if(!body) return message.reply("Unable to find a meme. Please try again!")
 
-        let mEmbed = new Discord.RichEmbed()
-        .setColor(colors.orange)
+        const embed = new Discord.MessageEmbed()
+        .setColor("BLUE")
         .setTitle(body.title)
         .setURL(body.postLink)
         .setImage(body.url)
         .setTimestamp()
         .setFooter('Sick Bot', bot.user.displayAvatarURL);
-        message.channel.send({embed: mEmbed}).then(async function (message) {
+        message.channel.send(embed).then(async function (message) {
             await message.react("⬆️")
             await message.react("↕")
             await message.react("⬇️")

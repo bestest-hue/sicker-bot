@@ -1,35 +1,50 @@
 const Discord = require("discord.js");
 const superagent = require("superagent");
-const urban = require("urban");
+const fetch = require('node-fetch')
+const querystring = require ('querystring')
 
 // FILES
 const botconfig = require("../botconfig.json");
 const colors = require("../colors.json");
 
-module.exports.run = async (bot, message, args) => {
-    if(args < 1 || !["random", "search"].includes(args[0])) return message.channel.send("`!urban search or random [query]`")
-    let image = "https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2018-01-11/297387706245_85899a44216ce1604c93_512.jpg";
-    let search = args[1] ? urban(args.slice(1).join(" ")) : urban.random();
+module.exports.run = async (bot, message) => {
+    const args = message.content.substring(botconfig.prefix.length).split(" ")
+
+	if (message.content.startsWith(`${botconfig.prefix}urban`)) {		
+		const searchString = querystring.stringify({ term: args.slice(1).join(" ") })
+
+        if (!args.slice(1).join(" ")) return message.channel.send(new MessageEmbed()
+            .setColor("BLUE")
+            .setDescription(`Please try again.`)
+        )
+
+        const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${searchString}`).then(response => response.json())
+
         try {
-            search.first(res => {
-                if(!res) return message.channel.send("No results found for this topic. Please try again");
-                let { word, definition, example, thumbs_up, thumbs_down, permalink, author} = res;
+            const [answer] = list
 
-                let embed = new Discord.RichEmbed()
-                .setColor(colors.orange)
-                .setAuthor("Urban Dictionary", image)
-                .setTitle(`${word}`)
-                .setDescription(`**Definition:** ${definition || "No definition"}
-                **Example:** ${example || "No example"}
-                **Link:** [link to ${word}](${permalink || "https://www.urbandictionary.com/" })`)
+            const trim = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str)
+
+            const embed = new Discord.MessageEmbed()
+                .setColor("BLUE")
+                .setTitle(answer.word)
+                .setURL(answer.permalink)
+                .addFields(
+                    { name: 'Definition', value: trim(answer.definition, 1024) },
+                    { name: 'Example', value: trim(answer.example, 1024) },
+                    { name: 'Rating', value: `${answer.thumbs_up} 👍 ${answer.thumbs_down} 👎` },
+                )
                 .setTimestamp()
-                .setFooter(`Written by ${author || "Unknown"}`);
-
-                message.channel.send(embed);
-            })
-        } catch(e) {
-            console.log(e);
+                .setFooter('Sick Bot', bot.user.displayAvatarURL);
+            message.channel.send(embed)
+        } catch (error) {
+            console.log(error)
+            return message.channel.send(new Discord.MessageEmbed()
+                .setColor("BLUE")
+                .setDescription(`No results were found for **${args.slice(1).join(" ")}**`)
+            )
         }
+	}	
 }
 
 module.exports.config = {

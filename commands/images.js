@@ -8,13 +8,6 @@ const botconfig = require("../botconfig.json");
 const colors = require("../colors.json");
 
 module.exports.run = async (bot, message, args) => {
-
-    const arrayOfUsersIds = ['249290169838993408'];
-
-    for (let i = 0; i < arrayOfUsersIds.length; i++) {
-    if (message.author.id === arrayOfUsersIds[i]) return message.reply('No');
-    };
-
         let parts = message.content.split(" ");
         let search = parts.slice(1).join(" ");
         let msg = await message.channel.send("Searching...")
@@ -51,14 +44,14 @@ module.exports.run = async (bot, message, args) => {
             let imgurl = urls[Math.floor(Math.random()* urls.length)]
      
             // Send result
-            let iEmbed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
             .setTitle('Open original')
             .setURL(imgurl)
-            .setColor(colors.orange)
+            .setColor("BLUE")
             .setImage(imgurl)
             .setTimestamp()
             .setFooter('Sick Bot', bot.user.displayAvatarURL);
-            message.channel.send({embed: iEmbed});
+            message.channel.send(embed)
 
         });
         msg.delete();
