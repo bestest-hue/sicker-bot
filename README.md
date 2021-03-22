@@ -1,0 +1,2 @@
+# sicker-bot
+Discord Bot
