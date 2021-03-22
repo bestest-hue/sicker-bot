@@ -8,7 +8,7 @@ const botconfig = require("../botconfig.json");
 const colors = require("../colors.json");
 
 module.exports.run = async (bot, message, args) => {
-    const arrayOfUsersIds = ['249290169838993408', '423535529309634562'];
+    const arrayOfUsersIds = ['249290169838993408'];
 
     for (let i = 0; i < arrayOfUsersIds.length; i++) {
     if (message.author.id === arrayOfUsersIds[i]) return message.reply('No 😊');
