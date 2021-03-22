@@ -1,0 +1,70 @@
+const Discord = require("discord.js");
+const superagent = require("superagent");
+const cheerio = require('cheerio');
+const request = require('request');
+
+// FILES
+const botconfig = require("../botconfig.json");
+const colors = require("../colors.json");
+
+module.exports.run = async (bot, message, args) => {
+
+    const arrayOfUsersIds = ['249290169838993408'];
+
+    for (let i = 0; i < arrayOfUsersIds.length; i++) {
+    if (message.author.id === arrayOfUsersIds[i]) return message.reply('No');
+    };
+
+        let parts = message.content.split(" ");
+        let search = parts.slice(1).join(" ");
+        let msg = await message.channel.send("Searching...")
+       
+        let options = {
+            url: "http://results.dogpile.com/serp?qc=images&q=" + search,
+            method: "GET",
+            headers: {
+                "Accept": "text/html",
+                "User-Agent": "Chrome"
+            }
+        };
+     
+        request(options, function(error, response, responseBody) {
+            if (error) {
+                return;
+            }
+     
+     
+            $ = cheerio.load(responseBody);
+     
+     
+            let links = $(".image a.link");
+     
+            let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
+           
+            console.log(urls);
+     
+            if (!urls.length) {
+               
+                return;
+            }
+
+            let imgurl = urls[Math.floor(Math.random()* urls.length)]
+     
+            // Send result
+            let iEmbed = new Discord.RichEmbed()
+            .setTitle('Open original')
+            .setURL(imgurl)
+            .setColor(colors.orange)
+            .setImage(imgurl)
+            .setTimestamp()
+            .setFooter('Sick Bot', bot.user.displayAvatarURL);
+            message.channel.send({embed: iEmbed});
+
+        });
+        msg.delete();
+}
+
+module.exports.config = {
+    name: "image",
+    aliases: ["img", "i"]
+}
