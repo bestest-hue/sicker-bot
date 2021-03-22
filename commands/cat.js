@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
         .setURL(body.file)
         .setImage(body.file)
         .setTimestamp()
-        .setFooter('Sick Bot', bot.user.displayAvatarURL)
+        .setFooter('Sick Bot', bot.user.displayAvatarURL())
         message.channel.send(embed)
 
         msg.delete();

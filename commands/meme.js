@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
         .setURL(body.postLink)
         .setImage(body.url)
         .setTimestamp()
-        .setFooter('Sick Bot', bot.user.displayAvatarURL);
+        .setFooter('Sick Bot', bot.user.displayAvatarURL());
         message.channel.send(embed).then(async function (message) {
             await message.react("⬆️")
             await message.react("↕")

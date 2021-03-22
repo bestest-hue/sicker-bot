@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args) => {
         .addField("Server Owner:", `${message.guild.owner}`, true)
         .addField("Member Count:", `${message.guild.memberCount}`, true)
         .addField("Role Count:", `${message.guild.roles.size}`, true)
-        .setFooter('Sick Bot', bot.user.displayAvatarURL);
+        .setFooter('Sick Bot', bot.user.displayAvatarURL());
         message.channel.send(embed)
 }
 

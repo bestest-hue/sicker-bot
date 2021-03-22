@@ -35,7 +35,7 @@ module.exports.run = async (bot, message) => {
                     { name: 'Rating', value: `${answer.thumbs_up} 👍 ${answer.thumbs_down} 👎` },
                 )
                 .setTimestamp()
-                .setFooter('Sick Bot', bot.user.displayAvatarURL);
+                .setFooter('Sick Bot', bot.user.displayAvatarURL());
             message.channel.send(embed)
         } catch (error) {
             console.log(error)

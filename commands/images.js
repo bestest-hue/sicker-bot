@@ -56,7 +56,7 @@ module.exports.run = async (bot, message, args) => {
             .setColor("BLUE")
             .setImage(imgurl)
             .setTimestamp()
-            .setFooter('Sick Bot', bot.user.displayAvatarURL);
+            .setFooter('Sick Bot', bot.user.displayAvatarURL());
             message.channel.send(embed)
 
         });
