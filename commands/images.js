@@ -14,38 +14,38 @@ module.exports.run = async (bot, message, args) => {
     if (message.author.id === arrayOfUsersIds[i]) return message.reply('No 😊');
     };
 
-        let parts = message.content.split(" ");
-        let search = parts.slice(1).join(" ");
-        let msg = await message.channel.send("Searching...")
+    let parts = message.content.split(" ");
+    let search = parts.slice(1).join(" ");
+    let msg = await message.channel.send("Searching...")
+   
+    let options = {
+        url: "https://www.ecosia.org/images?q=" + search,
+        method: "GET",
+        headers: {
+            "Accept": "text/html",
+            "User-Agent": "Chrome"
+        }
+    };
+ 
+    request(options, function(error, response, responseBody) {
+        if (error) {
+            return;
+        }
+ 
+ 
+        $ = cheerio.load(responseBody);
+ 
+ 
+        let links = $(".image-result__link-wrapper a");
+ 
+        let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
        
-        let options = {
-            url: "http://results.dogpile.com/serp?qc=images&q=" + search,
-            method: "GET",
-            headers: {
-                "Accept": "text/html",
-                "User-Agent": "Chrome"
-            }
-        };
-     
-        request(options, function(error, response, responseBody) {
-            if (error) {
-                return;
-            }
-     
-     
-            $ = cheerio.load(responseBody);
-     
-     
-            let links = $(".image a.link");
-     
-            let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
+        console.log(urls);
+ 
+        if (!urls.length) {
            
-            console.log(urls);
-     
-            if (!urls.length) {
-               
-                return;
-            }
+            return;
+        }
 
             let imgurl = urls[Math.floor(Math.random()* urls.length)]
      
